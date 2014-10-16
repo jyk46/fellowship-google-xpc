@@ -321,6 +321,7 @@
   }
   \cbxarticle@oldthebibliography{#1}%
   \setlength{\itemsep}{0.2ex}%
+  \cbxsetfontsize{9.5pt}%
   \vspace{0.7ex}%
 }
 

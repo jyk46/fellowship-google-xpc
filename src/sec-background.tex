@@ -1,0 +1,44 @@
+%=========================================================================
+% sec-background
+%=========================================================================
+
+\section{Background}
+\label{sec-background}
+
+\subsection{Amorphous Data Parallelism}
+
+Although all data-parallel applications contain some number of similar
+tasks which operate on independent pieces of data, there can still be a
+significant amount of diversity. Table~\ref{fig-xpc-dp-tvadp} compares
+two kinds of data parallelism which we term traditional data parallelism
+and amorphous data parallelism.
+
+\emph{Traditional data parallelism} is associated with four key
+properties: (1)~tasks have highly regular control flow; (2)~tasks operate
+on regular data structures (e.g., linear arrays, matrices); (3)~the
+inputs and outputs of the tasks are disjoint; and (4)~there are a static
+number of tasks which are known a priori. Table~\ref{fig-xpc-dp-tvadp}
+includes pseudocode for a simple traditional data-parallel application
+that performs element-wise vector-vector addition. Classic data-parallel
+accelerators usually focus on executing traditional data parallelism as
+efficiently as possible.
+
+\emph{Amorphous data parallelism} is a superset of traditional data
+parallelism with four key differences which enable new and interesting
+applications: (1)~tasks can have significantly irregular control flow;
+(2)~tasks can operate on very irregular data structures (e.g., sets,
+tress, graphs); (3) the inputs and outputs of some tasks can overlap such
+that they cannot execute concurrently; and (4)~tasks can generate other
+tasks dynamically~\cite{pingali-tao-pldi2011}.
+Table~\ref{fig-xpc-dp-tvadp} includes pseudocode for a simple amorphous
+data-parallel application that performs a breadth-first search across an
+undirected acyclic graph. Each task dynamically generates more tasks to
+search the corresponding neighbors in the graph. As illustrated in the
+pseudocode, amorphous data-parallel applications often use worklists to
+manage the dynamically generated tasks. Applications that modify the
+underlying irregular data structure can be even more challenging, since
+parallel tasks can potentially update the same portion of the data
+structure at the same time. A common method is to use a speculative
+approach where threads first reserve assets required by the task in the
+reserve phase and only commit if the reservation was successful in the
+commit phase.
