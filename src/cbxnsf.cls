@@ -16,7 +16,7 @@
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cbxnsf}[2009/07/18 ver 0.1]
-\LoadClass[11pt]{article}
+\LoadClass[10pt]{article}
 
 %-------------------------------------------------------------------------
 % Options
@@ -41,7 +41,7 @@
 \RequirePackage{geometry}     % Page layout
 
 \RequirePackage[T1]{fontenc}  % Make sure we use T1 font encoding
-\RequirePackage{mathptmx}     % Use times for serif font
+\RequirePackage{mathpazo}     % Use times for serif font
 \RequirePackage[scaled=0.92]{helvet} % Use helvetica for sans serif font
 %\RequirePackage{courier}      % Use courier for fixed width font
 
