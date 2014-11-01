@@ -2,43 +2,51 @@
 % sec-background
 %=========================================================================
 
-\section{Background}
+\section{Previous Research}
 \label{sec-background}
 
-\subsection{Amorphous Data Parallelism}
+Several aspects of the XPC architecture are inspired by my previous work
+on general-purpose graphics processing units (GPGPUs). Although GPGPUs
+can achieve higher performance and energy-efficiency than traditional
+multicore architectures, the realized potential is critically dependent
+on the control and memory-access structure inherent to the
+application. Applications with ample conventional data parallelism often
+excel on GPGPUs, whereas those with amorphous data parallelism tend to
+suffer from serialized execution and suboptimal memory coalescing.
 
-Although all data-parallel applications contain some number of similar
-tasks which operate on independent pieces of data, there can still be a
-significant amount of diversity. Table~\ref{fig-xpc-dp-tvadp} compares
-two kinds of data parallelism which we term traditional data parallelism
-and amorphous data parallelism.
+In the paper published at ISCA 2013, I focused on further improving the
+performance and energy efficiency of conventional data parallel
+applications GPGPUs by exploiting a new form of structure called
+\emph{value structure} to detect and eliminate redundant
+computations~\cite{kim-simt-vstruct-isca2013}. Value structure occurs
+when the same operation uses values across threads that can be
+represented as a compact function of the thread index. \emph{Affine
+  values} are a class of value structure which can be represented in the
+following form: $V(i) = b + i \times s$ where $i$ is the thread index,
+$b$ is the base, and $s$ is the stride. As such, affine values can be
+compactly encoded as a base and stride pair instead of storing a separate
+value corresponding to each thread. Three techniques were developed to
+allow certain arithmetic, memory, and branch instructions operating on
+affine values to perform the computation once instead of having each
+thread perform a separate computation. Using these techniques achieved
+speedups of up to 1.7$\times$ and an increase in energy efficiency of up
+to 1.3$\times$ on conventional data parallel applications. The benefits
+of this technique was less apparent for applications with amorphous data
+parallelism.
 
-\emph{Traditional data parallelism} is associated with four key
-properties: (1)~tasks have highly regular control flow; (2)~tasks operate
-on regular data structures (e.g., linear arrays, matrices); (3)~the
-inputs and outputs of the tasks are disjoint; and (4)~there are a static
-number of tasks which are known a priori. Table~\ref{fig-xpc-dp-tvadp}
-includes pseudocode for a simple traditional data-parallel application
-that performs element-wise vector-vector addition. Classic data-parallel
-accelerators usually focus on executing traditional data parallelism as
-efficiently as possible.
-
-\emph{Amorphous data parallelism} is a superset of traditional data
-parallelism with four key differences which enable new and interesting
-applications: (1)~tasks can have significantly irregular control flow;
-(2)~tasks can operate on very irregular data structures (e.g., sets,
-tress, graphs); (3) the inputs and outputs of some tasks can overlap such
-that they cannot execute concurrently; and (4)~tasks can generate other
-tasks dynamically~\cite{pingali-tao-pldi2011}.
-Table~\ref{fig-xpc-dp-tvadp} includes pseudocode for a simple amorphous
-data-parallel application that performs a breadth-first search across an
-undirected acyclic graph. Each task dynamically generates more tasks to
-search the corresponding neighbors in the graph. As illustrated in the
-pseudocode, amorphous data-parallel applications often use worklists to
-manage the dynamically generated tasks. Applications that modify the
-underlying irregular data structure can be even more challenging, since
-parallel tasks can potentially update the same portion of the data
-structure at the same time. A common method is to use a speculative
-approach where threads first reserve assets required by the task in the
-reserve phase and only commit if the reservation was successful in the
-commit phase.
+In the paper published at MICRO 2014, I attempted to address the
+difficulty of efficiently mapping amorphous data parallel applications to
+GPGPUs by utillizing \emph{hardware worklists} to improve memory
+contention and load balancing when managing fine-grain parallel
+tasks~\cite{kim-hwwl-micro2014}. One way of mapping amorphous data
+parallel applications to GPGPUs is by using a shared software
+worklist. Although this method yields reasonable speedups, this is only
+possible with aggressive software optimizations and still leaves issues
+with high memory contention and suboptimal load balancing. The hardware
+provides dedicated worklist banks for each computation lane to decouple
+interacting with the worklist from memory accesses to reduce memory
+contention. In addition, a hardware work redistribution network was
+implemented to allow dynamic load balancing of fine-grain tasks across
+the worklist banks. Using these techniques resulted in speedups of up to
+2.4$\times$ in amorphous data parallel applications, some of which only
+had marginal speedups in previous studies.

@@ -63,19 +63,3 @@ interface. Figure~\ref{fig-intro-overview} highlights the vertically
 integrated methodology that will be used to explore both software and
 hardware techniques for \emph{exposing}, \emph{scheduling}, and
 \emph{executing} fine-grain parallel tasks.
-
-Several aspects of the XPC architecture are inspired by my previous work
-on general-purpose graphics processing units (GPGPUs). In the paper
-published at ISCA 2013, I was able to improve the performance and energy
-efficiency of conventional data parallel applications GPGPUs by
-exploiting a new form of structure called \emph{value structure} to
-detect and eliminate redundant
-computations~\cite{kim-simt-vstruct-isca2013}. The benefits of this
-technique was less apparent for applications with more amorphous data
-parallelism. This issue was addressed in the paper published at MICRO
-2014, where \emph{hardware worklists} were utilized in GPGPUs to improve
-memory contention and load balancing when managing fine-grain parallel
-tasks, resulting in promising speedups for amorphous data parallel
-applications~\cite{kim-hwwl-micro2014}. The insights from these studies
-helped guide the designs for a broader range of data-parallel
-accelerators and system-wide task distribution schemes.
