@@ -10,10 +10,13 @@ heterogeneous architectures by exposing fine-grain parallel tasks as
 parallel function calls in the software/hardware interface. By exploring
 both software and hardware approaches for exposing, scheduling, and
 executing fine-grain parallel tasks, it is possible to identify
-permutations yielding high performance and energy efficiency for a wide
-range of amorphous data parallel applications with reasonable hardware
-complexity overhead. The seamless adaptivity across a sea of
-general-purpose and data-parallel accelerator tiles specialized for
-exploiting a broad range of amorphous data parallelism is one promising
-approach to address the significant challenges in technology and
-applications facing computer architects today.
+permutations yielding optimal performance and energy efficiency for a
+wide range of amorphous data parallel applications with reasonable
+hardware complexity overhead.  The long-term plan is to first develop the
+XPC software framework to profile benchmarks on an x86-based platform,
+then design and evaluate each XPC tile in isolation, before combining
+both software and hardware elements together to explore the adaptive
+scheduling of fine-grain tasks across the heterogeneous substrate. A
+subset of the XPC architecture will also be implemented at the
+register-transfer level to better estimate area, energy, and timing
+metrics.

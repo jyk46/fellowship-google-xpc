@@ -5,48 +5,38 @@
 \section{Previous Research}
 \label{sec-background}
 
-Several aspects of the XPC architecture are inspired by my previous work
+Several aspects of the XPC architecture are inspired by our previous work
 on general-purpose graphics processing units (GPGPUs). Although GPGPUs
 can achieve higher performance and energy-efficiency than traditional
 multicore architectures, the realized potential is critically dependent
-on the control and memory-access structure inherent to the
-application. Applications with ample conventional data parallelism often
-excel on GPGPUs, whereas those with amorphous data parallelism tend to
-suffer from serialized execution and suboptimal memory coalescing.
+on the control and memory-access structure inherent to the application.
+Applications with ample conventional data parallelism often excel on
+GPGPUs, whereas those with amorphous data parallelism tend to suffer from
+serialized execution and suboptimal memory coalescing.
 
-In the paper published at ISCA 2013, I focused on further improving the
-performance and energy efficiency of conventional data parallel
-applications GPGPUs by exploiting a new form of structure called
-\emph{value structure} to detect and eliminate redundant
-computations~\cite{kim-simt-vstruct-isca2013}. Value structure occurs
-when the same operation uses values across threads that can be
-represented as a compact function of the thread index. \emph{Affine
-  values} are a class of value structure which can be represented in the
-following form: $V(i) = b + i \times s$ where $i$ is the thread index,
-$b$ is the base, and $s$ is the stride. As such, affine values can be
-compactly encoded as a base and stride pair instead of storing a separate
-value corresponding to each thread. Three techniques were developed to
-allow certain arithmetic, memory, and branch instructions operating on
-affine values to perform the computation once instead of having each
-thread perform a separate computation. Using these techniques achieved
-speedups of up to 1.7$\times$ and an increase in energy efficiency of up
-to 1.3$\times$ on conventional data parallel applications. The benefits
-of this technique was less apparent for applications with amorphous data
-parallelism.
+In our paper published at ISCA 2013, we focused on further improving the
+performance and energy efficiency of conventional data-parallel
+applications by exploiting \emph{value structure}, a new form of
+structure where values can be encoded as a compact function of the thread
+index~\cite{kim-simt-vstruct-isca2013}. Three techniques were developed
+to allow certain arithmetic, memory, and branch instructions with
+operands exhibiting value structure to perform the computation once
+instead of having each thread perform a separate computation. Using these
+techniques achieved speedups of up to 1.7$\times$ and an increase in
+energy efficiency of up to 1.3$\times$ on conventional data parallel
+applications. Unfortunately, the benefit of this technique was less
+apparent for applications with amorphous data parallelism.
 
-In the paper published at MICRO 2014, I attempted to address the
-difficulty of efficiently mapping amorphous data parallel applications to
-GPGPUs by utillizing \emph{hardware worklists} to improve memory
-contention and load balancing when managing fine-grain parallel
-tasks~\cite{kim-hwwl-micro2014}. One way of mapping amorphous data
-parallel applications to GPGPUs is by using a shared software
-worklist. Although this method yields reasonable speedups, this is only
-possible with aggressive software optimizations and still leaves issues
-with high memory contention and suboptimal load balancing. The hardware
-provides dedicated worklist banks for each computation lane to decouple
-interacting with the worklist from memory accesses to reduce memory
-contention. In addition, a hardware work redistribution network was
-implemented to allow dynamic load balancing of fine-grain tasks across
-the worklist banks. Using these techniques resulted in speedups of up to
+In our paper published at MICRO 2014, we attempted to address the
+difficulty of efficiently mapping amorphous data-parallel applications to
+GPGPUs by utilizing \emph{hardware worklists} to mitigate the classic
+challenges involved with double-buffered software worklists: high memory
+contention and suboptimal load balancing~\cite{kim-hwwl-micro2014}. Our
+technique uses per-lane worklist banks and adds new instructions for
+enqueuing/dequeuing tasks to/from the hardware worklist. A hardware work
+redistribution unit enables dynamic load balancing of fine-grain tasks
+across the worklist banks, and a virtualization scheme enables spilling
+tasks to memory. Using these techniques resulted in speedups of up to
 2.4$\times$ in amorphous data parallel applications, some of which only
 had marginal speedups in previous studies.
+

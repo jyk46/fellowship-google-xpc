@@ -185,6 +185,7 @@
 
   \thispagestyle{descriptionpagestyle}
   \setcounter{page}{1}
+  \vspace{6pt}
 
 }}
 
